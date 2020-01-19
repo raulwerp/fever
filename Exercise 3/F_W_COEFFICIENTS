@@ -1,0 +1,17 @@
+select t_revenues.id_plan, t_revenues.tweek, sum(t_revenues.revenue) revenues, sum(t_revenues.numtrans)/sum(t_views.views) ctp, 
+sum(t_revenues.revenue)/sum(t_trans.marketing) roas
+from 
+(select plan_id id_plan, week(purchase_date) tweek, sum(ticket_price*ticket_qty) revenue, count(distinct id) numtrans
+from tmp_test_micro_transactions
+group by id_plan, tweek) t_revenues,
+(select plan_id id_plan, week(date) tweek, count(plan_id) views
+from tmp_test_micro_plan_views
+group by id_plan, tweek) t_views,
+(select plan_id id_plan, week(date) tweek, sum(marketing_spend) marketing
+from tmp_test_micro_marketing_spend
+group by id_plan, tweek) t_trans
+where t_views.id_plan = t_revenues.id_plan
+ and t_views.tweek = t_revenues.tweek
+ and t_views.id_plan = t_trans.id_plan
+ and t_views.tweek = t_trans.tweek
+group by t_revenues.id_plan, t_revenues.tweek
