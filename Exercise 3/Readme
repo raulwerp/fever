@@ -1,4 +1,4 @@
 I was not able to create a pipeline. Don't have the required knowledge. From here, for the next steps, I work with datasets built in
 Microstrategy from the provided files.
 
-I did an ingestion script to load the files in a generic database (Ingestion.py).
+I did an ingestion script to load the files in a generic database (Ingestion.py) and to extract the plan_id from the campaign_name.
